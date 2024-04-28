@@ -10,6 +10,8 @@ const {
   switchAccount,
   loginAccount,
   getGigsRandom,
+  loadParticipants,
+  loadParticipantsChatSingle,
 } = require("../controller/usersController");
 router.post("/signup/:userType", signup);
 router.post("/login", loginAccount);
@@ -23,4 +25,8 @@ router.patch(
   upload.single("file"),
   userProfileUpdate
 );
+// messages routes
+router.get("/loadParticipants/:buyerid", loadParticipants);
+router.get("/loadParticipantsChat/:alsoLoggedInUserId/:otherUserID", loadParticipantsChatSingle);
+
 module.exports = router;

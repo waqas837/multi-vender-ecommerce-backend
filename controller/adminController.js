@@ -31,7 +31,7 @@ exports.ChangeUserApproval = async (req, res) => {
       { _id: userid },
       { approved: status }
     );
-    console.log("data", data);
+    // console.log("data", data);
     if (data) res.json({ success: true, message: "Success", data });
     if (!data) res.json({ success: false, message: "Invalid credentials" });
   } catch (error) {

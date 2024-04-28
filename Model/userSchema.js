@@ -33,6 +33,9 @@ const userData = new mongoose.Schema({
     default: false,
   },
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "sellerProduct" }],
+  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "message" }],
+  messagers: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+  rooms: [{ type: mongoose.Schema.Types.ObjectId, ref: "Room" }],
 });
 
 const Usersignup = new mongoose.model("users", userData);

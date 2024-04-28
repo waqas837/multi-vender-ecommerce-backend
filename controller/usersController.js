@@ -1,3 +1,4 @@
+const messagesSchema = require("../Model/messagesSchema");
 const { SellerProducts } = require("../Model/productSchema");
 const { Usersignup } = require("../Model/userSchema");
 
@@ -112,11 +113,53 @@ exports.loginAccount = async (req, res) => {
 exports.getGigsRandom = async (req, res) => {
   try {
     let data = await SellerProducts.find().populate({ path: "userInfo" });
-    console.log("data", data);
+    // console.log("data", data);
     if (data) res.json({ success: true, message: "Data found", data });
     if (!data) res.json({ success: false, message: "No data found" });
   } catch (error) {
     console.log("error while getGigsRandom", error);
     res.json({ success: false, message: "No data found" });
+  }
+};
+
+exports.loadParticipants = async (req, res) => {
+  try {
+    let { buyerid } = req.params;
+    let alsoLoggedInUserId = buyerid;
+    let data = await Usersignup.find({ _id: alsoLoggedInUserId }).populate({
+      path: "messagers",
+    });
+    // .populate({
+    //   path: "messages",
+    // })
+    // .populate({
+    //   path: "rooms",
+    // });
+    console.log("loadParticipants", data[0].messagers);
+    res.json({ success: true, data });
+  } catch (error) {
+    res.json({ success: false });
+    console.log("Error in loadParticipants", error);
+  }
+};
+
+exports.loadParticipantsChatSingle = async (req, res) => {
+  try {
+    let { alsoLoggedInUserId, otherUserID } = req.params;
+
+    // db.find({ $or: [{ sender: userA, receiver: userB }, { sender: userB, receiver: userA }]}
+    //   .sort({ timestamp: -1 }).skip(offset).limit(limit))
+
+    let message = await messagesSchema.find({
+      $or: [
+        { senderId: alsoLoggedInUserId, recieverId: otherUserID }, // Messages sent by alsoLoggedInUserId to
+        { senderId: otherUserID, recieverId: alsoLoggedInUserId }, // Messages sent by otherUserID to alsoLoggedInUserId
+      ],
+    });
+
+    res.json({ success: true, messages: message });
+  } catch (error) {
+    res.json({ success: false });
+    console.log("Error in loadParticipants", error);
   }
 };

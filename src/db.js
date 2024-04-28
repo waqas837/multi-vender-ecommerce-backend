@@ -4,10 +4,12 @@ const mongoose = require("mongoose");
 if (mongoose.connection.readyState === 1) {
   console.log("Already connected");
 } else {
+  // mongodb://127.0.0.1:27017
+  // mongodb+srv://bughlani:bughlani@cluster0.9qki3lg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
   mongoose
     .connect(
-      "mongodb+srv://bughlani:bughlani@cluster0.9qki3lg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+      "mongodb://127.0.0.1:27017"
     )
+    .then(() => console.log("db connected"))
     .catch((e) => console.log(e))
-    .then(() => console.log("db connected"));
 }
